@@ -174,6 +174,33 @@ JEI が入っていれば、転成の一覧（入力 → 出力と、各場の�
 
 `v0.2.0` のようなタグを push すると、同名タグ（なければ main）の Field Theory と組み合わせてビルド・テストし、jar を GitHub Release に添付します。
 
+## 公開（リリース）
+
+`v0.5.0` のようなタグを push すると、`.github/workflows/release.yml` が次を順に行います。
+
+1. タグと `gradle.properties` の `mod_version` が一致するか確認する（不一致なら止まる）
+2. ビルドと GameTest
+3. `CHANGELOG.md` からそのバージョンの節を抜き出し、変更履歴として添えて、**GitHub Releases・Modrinth・CurseForge** へ公開する
+
+### 最初に一度だけ必要な設定
+
+リポジトリの **Settings → Secrets and variables → Actions** で登録します。
+
+| 種類 | 名前 | 中身 |
+|---|---|---|
+| Secret | `MODRINTH_TOKEN` | Modrinth の個人アクセストークン（バージョン作成の権限） |
+| Secret | `CURSEFORGE_TOKEN` | CurseForge の API トークン |
+| Variable | `MODRINTH_PROJECT_ID` | Modrinth のプロジェクト ID |
+| Variable | `CURSEFORGE_PROJECT_ID` | CurseForge のプロジェクト ID（数字） |
+| Variable | `RELEASE_TYPE` | `alpha` / `beta` / `release`（省略時 `beta`） |
+| Variable | `FIELD_THEORY_MODRINTH_ID` | Field Theory の Modrinth プロジェクト ID（必須依存として登録するため） |
+| Variable | `FIELD_THEORY_CURSEFORGE_SLUG` | Field Theory の CurseForge スラッグ（同上） |
+
+トークンが未設定のサイトは飛ばされるので、プロジェクトを作る前でも GitHub Releases への公開は動きます。
+配布ページ用のアイコンは `docs/icon.png`（512×512）です。
+
+**順番:** Field Theory を先に公開し、各サイトのプロジェクトが存在する状態にしてから Field Arcana を公開してください（Field Arcana は Field Theory を必須依存、JEI を任意依存として登録します）。
+
 ## ライセンス
 
 [GNU Lesser General Public License v3.0](COPYING.LESSER)（`LGPL-3.0-only`）です。
