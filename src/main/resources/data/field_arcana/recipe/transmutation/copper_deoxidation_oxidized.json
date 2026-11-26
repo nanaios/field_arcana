@@ -1,4 +1,5 @@
 {
+  "type": "field_arcana:transmutation",
   "input": "minecraft:oxidized_copper",
   "output": "minecraft:weathered_copper",
   "catalyst": 1.0,

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "field_arcana:block/field_shaper"
+    },
+    "active=true": {
+      "model": "field_arcana:block/field_shaper_active"
+    }
+  }
+}

@@ -3,6 +3,7 @@
   "values": [
     "field_arcana:field_emitter",
     "field_arcana:field_sensor",
-    "field_arcana:field_resonator"
+    "field_arcana:field_resonator",
+    "field_arcana:field_shaper"
   ]
 }

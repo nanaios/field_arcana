@@ -1,4 +1,5 @@
 {
+  "type": "field_arcana:transmutation",
   "input": "minecraft:coal_block",
   "output": "minecraft:deepslate_diamond_ore",
   "catalyst": 3.0,

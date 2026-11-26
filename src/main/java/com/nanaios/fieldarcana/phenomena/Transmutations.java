@@ -1,11 +1,8 @@
 package com.nanaios.fieldarcana.phenomena;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.mojang.logging.LogUtils;
-import com.mojang.serialization.JsonOps;
 import com.nanaios.fieldarcana.ArcanaConfig;
 import com.nanaios.fieldarcana.advancement.WitnessPhenomenonTrigger;
+import com.nanaios.fieldarcana.registry.ArcanaRecipes;
 import com.nanaios.fieldarcana.registry.ArcanaTriggers;
 import com.nanaios.fieldarcana.spell.ArcanaEffects;
 import com.nanaios.fieldtheory.api.FieldSource;
@@ -23,39 +20,40 @@ import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
-import org.slf4j.Logger;
 
-/** Loads transmutations and lets every Mutatio source act on the blocks around it. */
+/** Lets every Mutatio source act on the blocks around it, following the transmutation recipes. */
 public final class Transmutations {
-    private static final Logger LOGGER = LogUtils.getLogger();
     /** How far from a Mutatio source blocks are probed (≈ 2σ of the Gaussian). */
     public static final int REACH = 4;
     public static final int INTERVAL = 10;
 
-    /** A loaded recipe together with its data-pack id. */
+    /** A recipe together with its id. */
     public record Entry(ResourceLocation id, Transmutation recipe) {
     }
-
-    private static volatile List<Entry> recipes = List.of();
 
     private Transmutations() {
     }
 
-    public static List<Entry> all() {
-        return recipes;
+    /** All transmutations, most specific first (more conditions win, then by id). */
+    public static List<Entry> all(RecipeManager manager) {
+        List<Entry> entries = new ArrayList<>();
+        for (RecipeHolder<Transmutation> holder : manager.getAllRecipesFor(ArcanaRecipes.TRANSMUTATION.get())) {
+            entries.add(new Entry(holder.id(), holder.value()));
+        }
+        entries.sort(Comparator.<Entry>comparingInt(e -> -e.recipe().conditions().size()).thenComparing(Entry::id));
+        return entries;
     }
 
     public static void onLevelTick(LevelTickEvent.Post event) {
-        if (!(event.getLevel() instanceof ServerLevel level) || recipes.isEmpty() || level.getGameTime() % INTERVAL != 0) {
+        if (!(event.getLevel() instanceof ServerLevel level) || level.getGameTime() % INTERVAL != 0) {
             return;
         }
         int attempts = ArcanaConfig.transmutationAttempts();
@@ -65,6 +63,10 @@ public final class Transmutations {
         FieldWorld world = FieldTheoryAPI.get(level);
         FieldType mutatio = FieldTypes.MUTATIO.get();
         if (!world.hasContent(mutatio)) {
+            return;
+        }
+        List<Entry> recipes = all(level.getRecipeManager());
+        if (recipes.isEmpty()) {
             return;
         }
         List<Vec3> seeds = new ArrayList<>();
@@ -86,7 +88,7 @@ public final class Transmutations {
                         seed.y + random.nextInt(2 * REACH + 1) - REACH,
                         seed.z + random.nextInt(2 * REACH + 1) - REACH);
                 if (level.isLoaded(pos)) {
-                    tryTransmute(level, world, pos);
+                    tryTransmute(level, world, pos, recipes);
                 }
             }
         }
@@ -99,6 +101,11 @@ public final class Transmutations {
      */
     @Nullable
     public static ResourceLocation tryTransmute(ServerLevel level, FieldWorld world, BlockPos pos) {
+        return tryTransmute(level, world, pos, all(level.getRecipeManager()));
+    }
+
+    @Nullable
+    private static ResourceLocation tryTransmute(ServerLevel level, FieldWorld world, BlockPos pos, List<Entry> recipes) {
         BlockState state = level.getBlockState(pos);
         if (state.isAir() || state.hasBlockEntity()) {
             return null;
@@ -116,25 +123,5 @@ public final class Transmutations {
             }
         }
         return null;
-    }
-
-    public static final class Loader extends SimpleJsonResourceReloadListener {
-        public static final String DIRECTORY = "field_arcana/transmutation";
-
-        public Loader() {
-            super(new Gson(), DIRECTORY);
-        }
-
-        @Override
-        protected void apply(Map<ResourceLocation, JsonElement> files, ResourceManager resourceManager, ProfilerFiller profiler) {
-            List<Entry> loaded = new ArrayList<>();
-            files.forEach((id, json) -> Transmutation.CODEC.parse(JsonOps.INSTANCE, json)
-                    .resultOrPartial(error -> LOGGER.error("Invalid transmutation {}: {}", id, error))
-                    .ifPresent(t -> loaded.add(new Entry(id, t))));
-            // Most specific first: more conditions win, then a stable order by id.
-            loaded.sort(Comparator.<Entry>comparingInt(e -> -e.recipe().conditions().size()).thenComparing(Entry::id));
-            recipes = List.copyOf(loaded);
-            LOGGER.info("Loaded {} transmutations", recipes.size());
-        }
     }
 }

@@ -4,6 +4,7 @@ import com.nanaios.fieldarcana.FieldArcana;
 import com.nanaios.fieldarcana.block.FieldEmitterBlock;
 import com.nanaios.fieldarcana.block.FieldResonatorBlock;
 import com.nanaios.fieldarcana.block.FieldSensorBlock;
+import com.nanaios.fieldarcana.block.FieldShaperBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -28,6 +29,14 @@ public final class ArcanaBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST)
                     .lightLevel(state -> state.getValue(FieldResonatorBlock.ACTIVE) ? 7 : 0));
+
+    public static final DeferredBlock<FieldShaperBlock> FIELD_SHAPER = BLOCKS.registerBlock("field_shaper", FieldShaperBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(3.5F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.COPPER_GRATE)
+                    .lightLevel(state -> state.getValue(FieldShaperBlock.ACTIVE) ? 5 : 0));
 
     public static final DeferredBlock<FieldSensorBlock> FIELD_SENSOR = BLOCKS.registerBlock("field_sensor", FieldSensorBlock::new,
             BlockBehaviour.Properties.of()

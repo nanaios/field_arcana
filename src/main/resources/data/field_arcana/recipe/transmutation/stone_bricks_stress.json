@@ -1,4 +1,5 @@
 {
+  "type": "field_arcana:transmutation",
   "input": "minecraft:stone_bricks",
   "output": "minecraft:cracked_stone_bricks",
   "catalyst": 1.0,

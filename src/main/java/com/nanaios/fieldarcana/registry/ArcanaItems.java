@@ -34,6 +34,7 @@ public final class ArcanaItems {
 
     public static final DeferredItem<BlockItem> FIELD_EMITTER = ITEMS.registerSimpleBlockItem(ArcanaBlocks.FIELD_EMITTER);
     public static final DeferredItem<BlockItem> FIELD_RESONATOR = ITEMS.registerSimpleBlockItem(ArcanaBlocks.FIELD_RESONATOR);
+    public static final DeferredItem<BlockItem> FIELD_SHAPER = ITEMS.registerSimpleBlockItem(ArcanaBlocks.FIELD_SHAPER);
     public static final DeferredItem<BlockItem> FIELD_SENSOR = ITEMS.registerSimpleBlockItem(ArcanaBlocks.FIELD_SENSOR);
 
     private ArcanaItems() {

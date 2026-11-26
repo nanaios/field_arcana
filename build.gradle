@@ -24,10 +24,22 @@ repositories {
         url = 'https://jitpack.io'
         content { includeGroup 'com.github.nanaios' }
     }
+    maven {
+        // JEI (optional recipe viewer integration)
+        url = 'https://maven.blamejared.com'
+        content {
+            includeGroup 'mezz.jei'
+            includeGroup 'net.mezzdev.config'
+        }
+    }
 }
 
 dependencies {
     implementation(project.findProperty('field_theory_coordinates') ?: "com.nanaios:field_theory:${field_theory_version}")
+
+    // JEI is optional: compile against its API, run it in development only.
+    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-1.21.1-neoforge:${jei_version}"
 }
 
 java {

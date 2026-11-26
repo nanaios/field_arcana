@@ -96,5 +96,14 @@
   "advancement.field_arcana.singing_crystal.title": "Singing Crystal",
   "advancement.field_arcana.singing_crystal.description": "Hear amethyst sing in an oscillating field",
   "guide.field_arcana.page.13": "§lField Resonator§r\n\nAn oscillating source. Redstone sets its amplitude.\nEmpty hand: period.\nSneak: phase +90°.\n\nIts wave travels at 0.5 blocks/tick, so wavelength = 0.5 × period.",
-  "guide.field_arcana.page.14": "§lInterference§r\n\nResonators with the same period interfere. In phase they reinforce on the mid-plane; out of phase they cancel there.\n\nA Field Sensor in amplitude mode reads the pattern. Amethyst sings at the antinodes."
+  "guide.field_arcana.page.14": "§lInterference§r\n\nResonators with the same period interfere. In phase they reinforce on the mid-plane; out of phase they cancel there.\n\nA Field Sensor in amplitude mode reads the pattern. Amethyst sings at the antinodes.",
+  "block.field_arcana.field_shaper": "Field Shaper",
+  "message.field_arcana.shaper.status": "Shaper: %s, %s (×%s)",
+  "message.field_arcana.shaper.shield": "shield",
+  "message.field_arcana.shaper.dampen": "dampen",
+  "message.field_arcana.shaper.amplify": "amplify",
+  "message.field_arcana.shaper.lens": "lens",
+  "jei.field_arcana.transmutation": "Transmutation",
+  "guide.field_arcana.page.15": "§lField Shaper§r\n\nA lasting lens or shield around the block. Redstone sets the radius.\nEmpty hand: mode (×0, ×0.5, ×2, ×3).\nCore: only that field.\nSneak: every field.",
+  "guide.field_arcana.page.16": "§lMagnets§r\n\nNeutral metal is polarised by Fulgur and drifts into the strongest field, whatever its sign.\n\nPower a Fulgur emitter and dropped ingots gather at its faces. Minecarts feel it too."
 }
