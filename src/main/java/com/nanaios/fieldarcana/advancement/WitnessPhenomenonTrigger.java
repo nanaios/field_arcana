@@ -27,7 +27,8 @@ public class WitnessPhenomenonTrigger extends SimpleCriterionTrigger<WitnessPhen
     public enum Kind implements StringRepresentable {
         BREAKDOWN("breakdown"),
         TRANSMUTATION("transmutation"),
-        TELEGRAPH("telegraph");
+        TELEGRAPH("telegraph"),
+        RESONANCE("resonance");
 
         public static final Codec<Kind> CODEC = StringRepresentable.fromEnum(Kind::values);
         private final String name;

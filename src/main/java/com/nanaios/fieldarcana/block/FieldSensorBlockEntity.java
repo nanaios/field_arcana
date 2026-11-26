@@ -25,10 +25,31 @@ public class FieldSensorBlockEntity extends BlockEntity {
     public static final double POTENTIAL_SCALE = 2.0;
     /** Signal per unit of field intensity |E|. */
     public static final double INTENSITY_SCALE = 12.0;
+    /** Signal per unit of oscillation amplitude. */
+    public static final double AMPLITUDE_SCALE = 2.0;
+
+    /** What the sensor measures. */
+    public enum Mode {
+        POTENTIAL("potential", POTENTIAL_SCALE),
+        INTENSITY("intensity", INTENSITY_SCALE),
+        AMPLITUDE("amplitude", AMPLITUDE_SCALE);
+
+        private final String key;
+        private final double scale;
+
+        Mode(String key, double scale) {
+            this.key = key;
+            this.scale = scale;
+        }
+
+        public Mode next() {
+            return values()[(ordinal() + 1) % values().length];
+        }
+    }
 
     @Nullable
     private FieldType field;
-    private boolean intensityMode;
+    private Mode mode = Mode.POTENTIAL;
     private double lastValue;
 
     public FieldSensorBlockEntity(BlockPos pos, BlockState state) {
@@ -41,10 +62,14 @@ public class FieldSensorBlockEntity extends BlockEntity {
         }
         int power = 0;
         if (sensor.field != null) {
-            FieldSample sample = FieldTheoryAPI.get(level).sample(sensor.field, Vec3.atCenterOf(pos));
-            sensor.lastValue = sensor.intensityMode ? sample.intensity() : Math.abs(sample.sourcePotential());
-            double scale = sensor.intensityMode ? INTENSITY_SCALE : POTENTIAL_SCALE;
-            power = Mth.clamp((int) Math.floor(sensor.lastValue * scale), 0, 15);
+            Vec3 at = Vec3.atCenterOf(pos);
+            if (sensor.mode == Mode.AMPLITUDE) {
+                sensor.lastValue = FieldTheoryAPI.get(level).amplitude(sensor.field, at);
+            } else {
+                FieldSample sample = FieldTheoryAPI.get(level).sample(sensor.field, at);
+                sensor.lastValue = sensor.mode == Mode.INTENSITY ? sample.intensity() : Math.abs(sample.sourcePotential());
+            }
+            power = Mth.clamp((int) Math.floor(sensor.lastValue * sensor.mode.scale), 0, 15);
         }
         int previous = state.getValue(FieldSensorBlock.POWER);
         if (previous != power) {
@@ -61,14 +86,23 @@ public class FieldSensorBlockEntity extends BlockEntity {
     }
 
     public void toggleMode() {
-        this.intensityMode = !intensityMode;
+        this.mode = mode.next();
         setChanged();
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
+        setChanged();
+    }
+
+    public Mode mode() {
+        return mode;
     }
 
     public Component describe() {
         Component fieldName = field == null ? Component.translatable("message.field_arcana.unattuned") : field.displayName();
-        Component mode = Component.translatable(intensityMode ? "message.field_arcana.sensor.intensity" : "message.field_arcana.sensor.potential");
-        return Component.translatable("message.field_arcana.sensor.status", fieldName, mode, String.format(Locale.ROOT, "%.2f", lastValue));
+        Component modeName = Component.translatable("message.field_arcana.sensor." + mode.key);
+        return Component.translatable("message.field_arcana.sensor.status", fieldName, modeName, String.format(Locale.ROOT, "%.2f", lastValue));
     }
 
     @Override
@@ -77,7 +111,7 @@ public class FieldSensorBlockEntity extends BlockEntity {
         if (field != null) {
             tag.putString("field", field.id().toString());
         }
-        tag.putBoolean("intensity", intensityMode);
+        tag.putString("mode", mode.key);
     }
 
     @Override
@@ -85,6 +119,15 @@ public class FieldSensorBlockEntity extends BlockEntity {
         super.loadAdditional(tag, registries);
         ResourceLocation id = tag.contains("field") ? ResourceLocation.tryParse(tag.getString("field")) : null;
         field = id == null ? null : FieldTheoryAPI.fieldTypes().get(id);
-        intensityMode = tag.getBoolean("intensity");
+        mode = Mode.POTENTIAL;
+        if (tag.contains("mode")) {
+            for (Mode m : Mode.values()) {
+                if (m.key.equals(tag.getString("mode"))) {
+                    mode = m;
+                }
+            }
+        } else if (tag.getBoolean("intensity")) {
+            mode = Mode.INTENSITY; // saved by 0.1/0.2
+        }
     }
 }

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "field_arcana:block/field_resonator"
+    },
+    "active=true": {
+      "model": "field_arcana:block/field_resonator_active"
+    }
+  }
+}

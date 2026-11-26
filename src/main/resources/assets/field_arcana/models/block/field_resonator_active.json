@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "field_arcana:block/field_resonator_top_active",
+    "side": "field_arcana:block/field_resonator_side",
+    "bottom": "field_arcana:block/field_emitter_bottom"
+  }
+}

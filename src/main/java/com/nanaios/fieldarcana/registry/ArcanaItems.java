@@ -33,6 +33,7 @@ public final class ArcanaItems {
             FieldPrimerItem::new, new Item.Properties().stacksTo(1));
 
     public static final DeferredItem<BlockItem> FIELD_EMITTER = ITEMS.registerSimpleBlockItem(ArcanaBlocks.FIELD_EMITTER);
+    public static final DeferredItem<BlockItem> FIELD_RESONATOR = ITEMS.registerSimpleBlockItem(ArcanaBlocks.FIELD_RESONATOR);
     public static final DeferredItem<BlockItem> FIELD_SENSOR = ITEMS.registerSimpleBlockItem(ArcanaBlocks.FIELD_SENSOR);
 
     private ArcanaItems() {

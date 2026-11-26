@@ -1,0 +1,26 @@
+{
+  "parent": "field_arcana:field_telegraph",
+  "display": {
+    "icon": {
+      "id": "minecraft:amethyst_cluster"
+    },
+    "title": {
+      "translate": "advancement.field_arcana.singing_crystal.title"
+    },
+    "description": {
+      "translate": "advancement.field_arcana.singing_crystal.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "see": {
+      "trigger": "field_arcana:witness_phenomenon",
+      "conditions": {
+        "kind": "resonance"
+      }
+    }
+  }
+}

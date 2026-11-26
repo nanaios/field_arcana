@@ -88,5 +88,13 @@
   "advancement.field_arcana.fulgurite.title": "Fulgurite",
   "advancement.field_arcana.fulgurite.description": "Turn sand into glass with Mutatio and Fulgur",
   "advancement.field_arcana.carbon_under_pressure.title": "Carbon Under Pressure",
-  "advancement.field_arcana.carbon_under_pressure.description": "Crystallise a block of coal into diamond ore"
+  "advancement.field_arcana.carbon_under_pressure.description": "Crystallise a block of coal into diamond ore",
+  "block.field_arcana.field_resonator": "Field Resonator",
+  "message.field_arcana.resonator.status": "Resonator: %s, period %s ticks (λ = %s), phase %s°",
+  "message.field_arcana.sensor.amplitude": "oscillation amplitude",
+  "config.field_arcana.resonance": "Singing amethyst",
+  "advancement.field_arcana.singing_crystal.title": "Singing Crystal",
+  "advancement.field_arcana.singing_crystal.description": "Hear amethyst sing in an oscillating field",
+  "guide.field_arcana.page.13": "§lField Resonator§r\n\nAn oscillating source. Redstone sets its amplitude.\nEmpty hand: period.\nSneak: phase +90°.\n\nIts wave travels at 0.5 blocks/tick, so wavelength = 0.5 × period.",
+  "guide.field_arcana.page.14": "§lInterference§r\n\nResonators with the same period interfere. In phase they reinforce on the mid-plane; out of phase they cancel there.\n\nA Field Sensor in amplitude mode reads the pattern. Amethyst sings at the antinodes."
 }
