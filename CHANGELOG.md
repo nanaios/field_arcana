@@ -1,7 +1,6 @@
 # 変更履歴
 
 ## 0.4.0
-- 公開ワークフロー：`v*` タグで GitHub Releases・Modrinth・CurseForge へ同時に公開（タグと `mod_version` の一致を確認し、CHANGELOG の該当節を添える）
 - Mod 一覧にアイコンを表示
 - 場整形器：ブロックの周りに永続の領域を作る（遮蔽 ×0／減衰 ×0.5／増幅 ×2／収束 ×3、半径はレッドストーン）
 - 転成をバニラのレシピ型 `field_arcana:transmutation` に移行（クライアントへ同期される）。データパックの置き場所は `data/<ns>/recipe/` に変更、組み込みレシピの ID は `field_arcana:transmutation/<名前>` に
