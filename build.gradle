@@ -102,11 +102,29 @@ tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << '-Xlint:deprecation'
 }
 
+// LGPL-3.0: ship the licence texts inside the distributed jar.
+tasks.named('jar', Jar).configure {
+    from(['COPYING', 'COPYING.LESSER']) {
+        rename { "${it}_${mod_id}" }
+    }
+}
+
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
             artifactId = mod_id
             from components.java
+            pom {
+                name = mod_name
+                description = mod_description
+                url = 'https://github.com/nanaios/field_arcana'
+                licenses {
+                    license {
+                        name = 'LGPL-3.0-only'
+                        url = 'https://www.gnu.org/licenses/lgpl-3.0.html'
+                    }
+                }
+            }
         }
     }
 }

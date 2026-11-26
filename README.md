@@ -120,4 +120,6 @@ GameTest（`gametest/ArcanaGameTests.java`）では、実サーバー上で次�
 
 ## ライセンス
 
-未定（現在は `All Rights Reserved`）。公開方針に合わせて `gradle.properties` の `mod_license` を変更してください。
+[GNU Lesser General Public License v3.0](COPYING.LESSER)（`LGPL-3.0-only`）です。
+LGPL v3 は GPL v3 に追加の許可を加える形で書かれているため、[GPL v3 の本文](COPYING) も同梱しています。
+配布用の jar にも両方の本文が入っています。
