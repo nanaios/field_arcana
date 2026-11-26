@@ -1,8 +1,10 @@
 package com.nanaios.fieldarcana.phenomena;
 
+import com.nanaios.fieldarcana.ArcanaConfig;
+import com.nanaios.fieldarcana.advancement.WitnessPhenomenonTrigger;
 import com.nanaios.fieldarcana.registry.ArcanaInteractions;
+import com.nanaios.fieldarcana.registry.ArcanaTriggers;
 import com.nanaios.fieldarcana.spell.ArcanaEffects;
-import com.nanaios.fieldarcana.spell.ArcanaTuning;
 import com.nanaios.fieldtheory.api.FieldType;
 import com.nanaios.fieldtheory.api.FieldTypes;
 import com.nanaios.fieldtheory.api.charge.Charges;
@@ -30,7 +32,7 @@ public final class Phenomena {
      * floats, arrows stall, mobs wade.
      */
     public static void binding(FieldContext context) {
-        if (!context.controlsMotion()) {
+        if (!context.controlsMotion() || !ArcanaConfig.binding()) {
             return;
         }
         FieldType nexus = FieldTypes.NEXUS.get();
@@ -49,7 +51,7 @@ public final class Phenomena {
      * its induced Fulgur charge. Charged bodies break down in much weaker fields.
      */
     public static void breakdown(FieldContext context) {
-        if (!context.isServerSide() || !(context.entity() instanceof LivingEntity living) || !living.isAlive()) {
+        if (!context.isServerSide() || !ArcanaConfig.breakdown() || !(context.entity() instanceof LivingEntity living) || !living.isAlive()) {
             return;
         }
         if ((living.tickCount + living.getId()) % 5 != 0) {
@@ -61,7 +63,7 @@ public final class Phenomena {
         }
         double charge = Math.abs(context.charge(fulgur));
         double stress = context.sample(fulgur).intensity() * (1.0 + charge);
-        if (stress < ArcanaTuning.BREAKDOWN_STRESS) {
+        if (stress < ArcanaConfig.breakdownThreshold()) {
             return;
         }
         ServerLevel level = (ServerLevel) context.level();
@@ -71,6 +73,7 @@ public final class Phenomena {
             Charges.clearInduced(living, fulgur);
         }
         spark(level, living, fulgur.color());
+        ArcanaTriggers.WITNESS.get().witness(level, Charges.center(living), WitnessPhenomenonTrigger.Kind.BREAKDOWN, null);
     }
 
     private static void spark(ServerLevel level, Entity entity, int color) {

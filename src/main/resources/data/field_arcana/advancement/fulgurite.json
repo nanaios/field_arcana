@@ -1,0 +1,27 @@
+{
+  "parent": "field_arcana:philosophers_field",
+  "display": {
+    "icon": {
+      "id": "minecraft:glass"
+    },
+    "title": {
+      "translate": "advancement.field_arcana.fulgurite.title"
+    },
+    "description": {
+      "translate": "advancement.field_arcana.fulgurite.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "see": {
+      "trigger": "field_arcana:witness_phenomenon",
+      "conditions": {
+        "kind": "transmutation",
+        "detail": "field_arcana:fulgurite"
+      }
+    }
+  }
+}

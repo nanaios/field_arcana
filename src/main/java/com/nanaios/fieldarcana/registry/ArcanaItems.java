@@ -2,6 +2,7 @@ package com.nanaios.fieldarcana.registry;
 
 import com.nanaios.fieldarcana.FieldArcana;
 import com.nanaios.fieldarcana.item.FieldCoreItem;
+import com.nanaios.fieldarcana.item.FieldPrimerItem;
 import com.nanaios.fieldarcana.item.InterferenceStaffItem;
 import com.nanaios.fieldarcana.item.ResonanceLensItem;
 import com.nanaios.fieldtheory.api.FieldTypes;
@@ -27,6 +28,9 @@ public final class ArcanaItems {
             InterferenceStaffItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
     public static final DeferredItem<ResonanceLensItem> RESONANCE_LENS = ITEMS.registerItem("resonance_lens",
             ResonanceLensItem::new, new Item.Properties().stacksTo(1));
+
+    public static final DeferredItem<FieldPrimerItem> FIELD_PRIMER = ITEMS.registerItem("field_primer",
+            FieldPrimerItem::new, new Item.Properties().stacksTo(1));
 
     public static final DeferredItem<BlockItem> FIELD_EMITTER = ITEMS.registerSimpleBlockItem(ArcanaBlocks.FIELD_EMITTER);
     public static final DeferredItem<BlockItem> FIELD_SENSOR = ITEMS.registerSimpleBlockItem(ArcanaBlocks.FIELD_SENSOR);

@@ -1,6 +1,8 @@
 package com.nanaios.fieldarcana.block;
 
+import com.nanaios.fieldarcana.advancement.WitnessPhenomenonTrigger;
 import com.nanaios.fieldarcana.registry.ArcanaBlockEntities;
+import com.nanaios.fieldarcana.registry.ArcanaTriggers;
 import com.nanaios.fieldtheory.api.FieldSample;
 import com.nanaios.fieldtheory.api.FieldTheoryAPI;
 import com.nanaios.fieldtheory.api.FieldType;
@@ -11,6 +13,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -43,8 +46,12 @@ public class FieldSensorBlockEntity extends BlockEntity {
             double scale = sensor.intensityMode ? INTENSITY_SCALE : POTENTIAL_SCALE;
             power = Mth.clamp((int) Math.floor(sensor.lastValue * scale), 0, 15);
         }
-        if (state.getValue(FieldSensorBlock.POWER) != power) {
+        int previous = state.getValue(FieldSensorBlock.POWER);
+        if (previous != power) {
             level.setBlock(pos, state.setValue(FieldSensorBlock.POWER, power), 3);
+            if (previous == 0 && level instanceof ServerLevel serverLevel) {
+                ArcanaTriggers.WITNESS.get().witness(serverLevel, Vec3.atCenterOf(pos), WitnessPhenomenonTrigger.Kind.TELEGRAPH, null);
+            }
         }
     }
 

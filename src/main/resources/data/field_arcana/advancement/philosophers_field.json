@@ -1,0 +1,26 @@
+{
+  "parent": "field_arcana:interference",
+  "display": {
+    "icon": {
+      "id": "field_arcana:mutatio_core"
+    },
+    "title": {
+      "translate": "advancement.field_arcana.philosophers_field.title"
+    },
+    "description": {
+      "translate": "advancement.field_arcana.philosophers_field.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "see": {
+      "trigger": "field_arcana:witness_phenomenon",
+      "conditions": {
+        "kind": "transmutation"
+      }
+    }
+  }
+}
