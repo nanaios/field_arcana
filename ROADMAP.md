@@ -47,7 +47,7 @@ a      = 符号 · forceScale · (Q/m) · E  ＋  α · ∇|E|² / (2m)
 ### 共通の基盤
 
 - ライセンス: LGPL-3.0-only
-- CI: main への push と PR でビルドと GameTest。`v*` タグで jar を GitHub Releases に添付
+- CI: main への push と PR でビルドと GameTest。公開は Actions の Release ボタン 1 つで GitHub Releases・Modrinth・CurseForge へ（手順は各リポジトリの `docs/RELEASING.md`）
 
 ### 未検証
 
