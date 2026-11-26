@@ -20,7 +20,7 @@
       "trigger": "field_arcana:witness_phenomenon",
       "conditions": {
         "kind": "transmutation",
-        "detail": "field_arcana:carbon_crystallisation"
+        "detail": "field_arcana:transmutation/carbon_crystallisation"
       }
     }
   },

@@ -20,7 +20,7 @@
       "trigger": "field_arcana:witness_phenomenon",
       "conditions": {
         "kind": "transmutation",
-        "detail": "field_arcana:fulgurite"
+        "detail": "field_arcana:transmutation/fulgurite"
       }
     }
   }

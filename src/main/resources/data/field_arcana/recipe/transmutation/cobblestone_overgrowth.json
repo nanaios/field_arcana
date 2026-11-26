@@ -1,4 +1,5 @@
 {
+  "type": "field_arcana:transmutation",
   "input": "minecraft:cobblestone",
   "output": "minecraft:mossy_cobblestone",
   "catalyst": 1.5,

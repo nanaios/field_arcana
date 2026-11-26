@@ -1,4 +1,5 @@
 {
+  "type": "field_arcana:transmutation",
   "input": "minecraft:packed_ice",
   "output": "minecraft:blue_ice",
   "catalyst": 2.0,

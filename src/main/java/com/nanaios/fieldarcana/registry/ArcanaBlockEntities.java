@@ -4,6 +4,7 @@ import com.nanaios.fieldarcana.FieldArcana;
 import com.nanaios.fieldarcana.block.FieldEmitterBlockEntity;
 import com.nanaios.fieldarcana.block.FieldResonatorBlockEntity;
 import com.nanaios.fieldarcana.block.FieldSensorBlockEntity;
+import com.nanaios.fieldarcana.block.FieldShaperBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -19,6 +20,10 @@ public final class ArcanaBlockEntities {
     @SuppressWarnings("DataFlowIssue")
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FieldResonatorBlockEntity>> FIELD_RESONATOR = BLOCK_ENTITIES.register("field_resonator",
             () -> BlockEntityType.Builder.of(FieldResonatorBlockEntity::new, ArcanaBlocks.FIELD_RESONATOR.get()).build(null));
+
+    @SuppressWarnings("DataFlowIssue")
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FieldShaperBlockEntity>> FIELD_SHAPER = BLOCK_ENTITIES.register("field_shaper",
+            () -> BlockEntityType.Builder.of(FieldShaperBlockEntity::new, ArcanaBlocks.FIELD_SHAPER.get()).build(null));
 
     @SuppressWarnings("DataFlowIssue")
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FieldSensorBlockEntity>> FIELD_SENSOR = BLOCK_ENTITIES.register("field_sensor",

@@ -7,6 +7,7 @@ import com.nanaios.fieldarcana.registry.ArcanaBlocks;
 import com.nanaios.fieldarcana.registry.ArcanaComponents;
 import com.nanaios.fieldarcana.registry.ArcanaInteractions;
 import com.nanaios.fieldarcana.registry.ArcanaItems;
+import com.nanaios.fieldarcana.registry.ArcanaRecipes;
 import com.nanaios.fieldarcana.registry.ArcanaTabs;
 import com.nanaios.fieldarcana.registry.ArcanaTriggers;
 import net.minecraft.resources.ResourceLocation;
@@ -15,7 +16,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
 
 /**
  * Field Arcana — magic as field engineering, built on Field Theory.
@@ -38,10 +38,11 @@ public final class FieldArcana {
         ArcanaTabs.TABS.register(modBus);
         ArcanaInteractions.INTERACTIONS.register(modBus);
         ArcanaTriggers.TRIGGERS.register(modBus);
+        ArcanaRecipes.TYPES.register(modBus);
+        ArcanaRecipes.SERIALIZERS.register(modBus);
 
         NeoForge.EVENT_BUS.addListener(Transmutations::onLevelTick);
         NeoForge.EVENT_BUS.addListener(Resonance::onLevelTick);
-        NeoForge.EVENT_BUS.addListener((AddReloadListenerEvent event) -> event.addListener(new Transmutations.Loader()));
     }
 
     public static ResourceLocation id(String path) {

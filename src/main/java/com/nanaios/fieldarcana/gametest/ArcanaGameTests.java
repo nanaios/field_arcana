@@ -6,6 +6,7 @@ import com.nanaios.fieldarcana.block.FieldEmitterBlockEntity;
 import com.nanaios.fieldarcana.block.FieldResonatorBlockEntity;
 import com.nanaios.fieldarcana.block.FieldSensorBlock;
 import com.nanaios.fieldarcana.block.FieldSensorBlockEntity;
+import com.nanaios.fieldarcana.block.FieldShaperBlockEntity;
 import com.nanaios.fieldarcana.item.StaffMode;
 import com.nanaios.fieldarcana.phenomena.Resonance;
 import com.nanaios.fieldarcana.phenomena.Transmutations;
@@ -71,7 +72,7 @@ public final class ArcanaGameTests {
 
         put(helper, FieldTypes.FULGUR.get(), new Vec3(7.5, 2.5, 9.5), 8.0);
         ResourceLocation fired = Transmutations.tryTransmute(helper.getLevel(), world(helper), helper.absolutePos(sand));
-        helper.assertTrue(FieldArcana.id("fulgurite").equals(fired), "sand should transmute by the fulgurite recipe, got " + fired);
+        helper.assertTrue(FieldArcana.id("transmutation/fulgurite").equals(fired), "sand should transmute by the fulgurite recipe, got " + fired);
         helper.assertBlockPresent(Blocks.GLASS, sand);
         cleanup(helper);
         helper.succeed();
@@ -227,6 +228,46 @@ public final class ArcanaGameTests {
         helper.assertTrue(!Resonance.trySing(helper.getLevel(), world(helper), helper.absolutePos(stone), wave), "stone must not sing");
         cleanup(helper);
         helper.succeed();
+    }
+
+    /**
+     * A Field Shaper around a sensor: in shield mode the emitter's field no longer reaches it; in
+     * lens mode the sensor reads more than it did without the shaper.
+     */
+    @GameTest(template = LAB, batch = "fa_shaper", timeoutTicks = 200)
+    public static void shaperShieldsAndFocuses(GameTestHelper helper) {
+        BlockPos emitterPos = new BlockPos(3, 2, 7);
+        BlockPos sensorPos = new BlockPos(8, 2, 7);
+        BlockPos shaperPos = new BlockPos(8, 2, 9);
+        helper.setBlock(emitterPos, ArcanaBlocks.FIELD_EMITTER.get());
+        helper.setBlock(emitterPos.north(), Blocks.REDSTONE_BLOCK);
+        ((FieldEmitterBlockEntity) helper.getBlockEntity(emitterPos)).attune(FieldTypes.FULGUR.get());
+        helper.setBlock(sensorPos, ArcanaBlocks.FIELD_SENSOR.get());
+        ((FieldSensorBlockEntity) helper.getBlockEntity(sensorPos)).attune(FieldTypes.FULGUR.get());
+        helper.setBlock(shaperPos, ArcanaBlocks.FIELD_SHAPER.get());
+        FieldShaperBlockEntity shaper = helper.getBlockEntity(shaperPos);
+        shaper.attune(FieldTypes.FULGUR.get());
+        shaper.setMode(FieldShaperBlockEntity.Mode.SHIELD);
+        int[] bare = {0};
+
+        helper.startSequence()
+                .thenWaitUntil(() -> helper.assertTrue(power(helper, sensorPos) > 0, "sensor should read the emitter"))
+                .thenExecute(() -> {
+                    bare[0] = power(helper, sensorPos);
+                    helper.setBlock(shaperPos.south(), Blocks.REDSTONE_BLOCK);
+                })
+                .thenWaitUntil(() -> helper.assertTrue(power(helper, sensorPos) == 0, "the shield should silence the sensor, power " + power(helper, sensorPos)))
+                .thenExecute(() -> ((FieldShaperBlockEntity) helper.getBlockEntity(shaperPos)).setMode(FieldShaperBlockEntity.Mode.LENS))
+                .thenWaitUntil(() -> helper.assertTrue(power(helper, sensorPos) > bare[0],
+                        "the lens should amplify the reading beyond " + bare[0] + ", power " + power(helper, sensorPos)))
+                .thenExecute(() -> helper.destroyBlock(shaperPos))
+                .thenExecute(() -> helper.assertTrue(world(helper).regions().stream().noneMatch(r -> r.id().equals(FieldShaperBlockEntity.regionId(helper.absolutePos(shaperPos)))),
+                        "breaking the shaper must remove its region"))
+                .thenSucceed();
+    }
+
+    private static int power(GameTestHelper helper, BlockPos sensor) {
+        return helper.getBlockState(sensor).getValue(FieldSensorBlock.POWER);
     }
 
     /** Every advancement loads, including the custom trigger conditions. */

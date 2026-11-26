@@ -1,4 +1,5 @@
 {
+  "type": "field_arcana:transmutation",
   "input": "minecraft:netherrack",
   "output": "minecraft:magma_block",
   "catalyst": 1.5,

@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 
 /** 場の理論入門 — an in-game guide. Its pages are translated, so it reads in the player's language. */
 public class FieldPrimerItem extends Item {
-    public static final int PAGES = 14;
+    public static final int PAGES = 16;
 
     public FieldPrimerItem(Properties properties) {
         super(properties);

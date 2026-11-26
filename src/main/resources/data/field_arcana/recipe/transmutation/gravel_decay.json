@@ -1,4 +1,5 @@
 {
+  "type": "field_arcana:transmutation",
   "input": "minecraft:gravel",
   "output": "minecraft:sand",
   "catalyst": 1.5

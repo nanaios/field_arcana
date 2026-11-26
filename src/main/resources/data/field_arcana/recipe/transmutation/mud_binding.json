@@ -1,4 +1,5 @@
 {
+  "type": "field_arcana:transmutation",
   "input": "minecraft:mud",
   "output": "minecraft:clay",
   "catalyst": 1.5,

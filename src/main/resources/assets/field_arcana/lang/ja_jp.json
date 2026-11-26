@@ -96,5 +96,14 @@
   "advancement.field_arcana.singing_crystal.title": "歌う結晶",
   "advancement.field_arcana.singing_crystal.description": "振動する場の中でアメジストが歌うのを聴く",
   "guide.field_arcana.page.13": "§l共鳴器§r\n\n振動する源。振幅は\nレッドストーンで決まる。\n素手：周期を変える\nスニーク：位相＋90°\n\n波は毎tick 0.5ブロック\n進むので、波長は\n周期の半分になる。",
-  "guide.field_arcana.page.14": "§l干渉§r\n\n同じ周期の共鳴器は\n干渉する。同位相なら\n中央で強め合い、\n逆位相なら打ち消す。\n\n振幅モードの検場器で\n縞を読める。腹では\nアメジストが歌う。"
+  "guide.field_arcana.page.14": "§l干渉§r\n\n同じ周期の共鳴器は\n干渉する。同位相なら\n中央で強め合い、\n逆位相なら打ち消す。\n\n振幅モードの検場器で\n縞を読める。腹では\nアメジストが歌う。",
+  "block.field_arcana.field_shaper": "場整形器",
+  "message.field_arcana.shaper.status": "場整形器: %s、%s（×%s）",
+  "message.field_arcana.shaper.shield": "遮蔽",
+  "message.field_arcana.shaper.dampen": "減衰",
+  "message.field_arcana.shaper.amplify": "増幅",
+  "message.field_arcana.shaper.lens": "収束",
+  "jei.field_arcana.transmutation": "転成",
+  "guide.field_arcana.page.15": "§l場整形器§r\n\nブロックの周りに、\n置きっぱなしのレンズや\n遮蔽を作る。半径は\nレッドストーンで決まる。\n素手：モード切替\n場核：その場だけ\nスニーク：全ての場",
+  "guide.field_arcana.page.16": "§l磁石§r\n\n中性の金属は雷場で\n分極し、符号によらず\n強い場の方へ寄っていく。\n\n雷場の発生器を動かせば、\n落ちたインゴットが\nその面に集まる。\nトロッコも引かれる。"
 }

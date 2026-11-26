@@ -1,4 +1,5 @@
 {
+  "type": "field_arcana:transmutation",
   "input": "minecraft:exposed_copper",
   "output": "minecraft:copper_block",
   "catalyst": 1.0,
