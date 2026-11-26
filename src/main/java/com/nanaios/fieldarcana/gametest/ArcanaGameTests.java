@@ -3,9 +3,11 @@ package com.nanaios.fieldarcana.gametest;
 import com.nanaios.fieldarcana.FieldArcana;
 import com.nanaios.fieldarcana.block.FieldEmitterBlock;
 import com.nanaios.fieldarcana.block.FieldEmitterBlockEntity;
+import com.nanaios.fieldarcana.block.FieldResonatorBlockEntity;
 import com.nanaios.fieldarcana.block.FieldSensorBlock;
 import com.nanaios.fieldarcana.block.FieldSensorBlockEntity;
 import com.nanaios.fieldarcana.item.StaffMode;
+import com.nanaios.fieldarcana.phenomena.Resonance;
 import com.nanaios.fieldarcana.phenomena.Transmutations;
 import com.nanaios.fieldarcana.registry.ArcanaBlocks;
 import com.nanaios.fieldarcana.spell.StaffCasting;
@@ -180,11 +182,58 @@ public final class ArcanaGameTests {
         helper.succeed();
     }
 
+    /**
+     * Two coherent resonators: in phase, a sensor in amplitude mode on their mid-plane reads a
+     * strong signal; shifting one by 180° cancels the wave there and the sensor falls silent.
+     */
+    @GameTest(template = LAB, batch = "fa_interference", timeoutTicks = 160)
+    public static void resonatorsInterfere(GameTestHelper helper) {
+        BlockPos left = new BlockPos(4, 2, 7);
+        BlockPos right = new BlockPos(10, 2, 7);
+        BlockPos sensorPos = new BlockPos(7, 2, 7);
+        for (BlockPos pos : new BlockPos[]{left, right}) {
+            helper.setBlock(pos, ArcanaBlocks.FIELD_RESONATOR.get());
+            helper.setBlock(pos.north(), Blocks.REDSTONE_BLOCK);
+            FieldResonatorBlockEntity resonator = helper.getBlockEntity(pos);
+            resonator.attune(FieldTypes.FULGUR.get());
+            resonator.setPeriodIndex(1);
+            resonator.setPhaseIndex(0);
+        }
+        helper.setBlock(sensorPos, ArcanaBlocks.FIELD_SENSOR.get());
+        FieldSensorBlockEntity sensor = helper.getBlockEntity(sensorPos);
+        sensor.attune(FieldTypes.FULGUR.get());
+        sensor.setMode(FieldSensorBlockEntity.Mode.AMPLITUDE);
+
+        helper.startSequence()
+                .thenWaitUntil(() -> helper.assertTrue(helper.getBlockState(sensorPos).getValue(FieldSensorBlock.POWER) >= 12,
+                        "in-phase resonators should reinforce on the mid-plane, power " + helper.getBlockState(sensorPos).getValue(FieldSensorBlock.POWER)))
+                .thenExecute(() -> ((FieldResonatorBlockEntity) helper.getBlockEntity(right)).setPhaseIndex(2))
+                .thenWaitUntil(() -> helper.assertTrue(helper.getBlockState(sensorPos).getValue(FieldSensorBlock.POWER) == 0,
+                        "antiphase resonators should cancel on the mid-plane, power " + helper.getBlockState(sensorPos).getValue(FieldSensorBlock.POWER)))
+                .thenSucceed();
+    }
+
+    /** Amethyst sings inside a strong oscillating field; ordinary stone does not. */
+    @GameTest(template = LAB, batch = "fa_singing")
+    public static void amethystSings(GameTestHelper helper) {
+        BlockPos crystal = new BlockPos(8, 2, 7);
+        BlockPos stone = new BlockPos(6, 2, 7);
+        helper.setBlock(crystal, Blocks.AMETHYST_BLOCK);
+        helper.setBlock(stone, Blocks.STONE);
+        FieldSource wave = new FieldSource(java.util.UUID.randomUUID(), FieldTypes.FULGUR.get(), helper.absoluteVec(new Vec3(7.5, 3.5, 7.5)),
+                15.0, helper.getLevel().getGameTime() + 200, ORIGIN, FieldSource.frequencyForPeriod(12), 0.0);
+        world(helper).putSource(wave);
+        helper.assertTrue(Resonance.trySing(helper.getLevel(), world(helper), helper.absolutePos(crystal), wave), "amethyst should sing");
+        helper.assertTrue(!Resonance.trySing(helper.getLevel(), world(helper), helper.absolutePos(stone), wave), "stone must not sing");
+        cleanup(helper);
+        helper.succeed();
+    }
+
     /** Every advancement loads, including the custom trigger conditions. */
     @GameTest(template = LAB, batch = "fa_advancements")
     public static void advancementsLoad(GameTestHelper helper) {
         for (String name : new String[]{"root", "crystallised_field", "observer", "interference", "gravity_well", "negative_mass",
-                "faraday_cage", "spark_gap", "field_telegraph", "philosophers_field", "fulgurite", "carbon_under_pressure"}) {
+                "faraday_cage", "spark_gap", "field_telegraph", "philosophers_field", "fulgurite", "carbon_under_pressure", "singing_crystal"}) {
             helper.assertTrue(helper.getLevel().getServer().getAdvancements().get(FieldArcana.id(name)) != null, "advancement " + name + " did not load");
         }
         helper.succeed();

@@ -2,6 +2,7 @@ package com.nanaios.fieldarcana.registry;
 
 import com.nanaios.fieldarcana.FieldArcana;
 import com.nanaios.fieldarcana.block.FieldEmitterBlock;
+import com.nanaios.fieldarcana.block.FieldResonatorBlock;
 import com.nanaios.fieldarcana.block.FieldSensorBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -19,6 +20,14 @@ public final class ArcanaBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.AMETHYST)
                     .lightLevel(state -> state.getValue(FieldEmitterBlock.ACTIVE) ? 9 : 0));
+
+    public static final DeferredBlock<FieldResonatorBlock> FIELD_RESONATOR = BLOCKS.registerBlock("field_resonator", FieldResonatorBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(3.5F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.AMETHYST)
+                    .lightLevel(state -> state.getValue(FieldResonatorBlock.ACTIVE) ? 7 : 0));
 
     public static final DeferredBlock<FieldSensorBlock> FIELD_SENSOR = BLOCKS.registerBlock("field_sensor", FieldSensorBlock::new,
             BlockBehaviour.Properties.of()

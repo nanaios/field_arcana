@@ -88,5 +88,13 @@
   "advancement.field_arcana.fulgurite.title": "フルグライト",
   "advancement.field_arcana.fulgurite.description": "転場と雷場で砂をガラスに変える",
   "advancement.field_arcana.carbon_under_pressure.title": "圧力下の炭素",
-  "advancement.field_arcana.carbon_under_pressure.description": "石炭ブロックをダイヤモンド鉱石へ結晶させる"
+  "advancement.field_arcana.carbon_under_pressure.description": "石炭ブロックをダイヤモンド鉱石へ結晶させる",
+  "block.field_arcana.field_resonator": "共鳴器",
+  "message.field_arcana.resonator.status": "共鳴器: %s、周期 %s tick（波長 %s）、位相 %s°",
+  "message.field_arcana.sensor.amplitude": "振動の振幅",
+  "config.field_arcana.resonance": "歌うアメジスト",
+  "advancement.field_arcana.singing_crystal.title": "歌う結晶",
+  "advancement.field_arcana.singing_crystal.description": "振動する場の中でアメジストが歌うのを聴く",
+  "guide.field_arcana.page.13": "§l共鳴器§r\n\n振動する源。振幅は\nレッドストーンで決まる。\n素手：周期を変える\nスニーク：位相＋90°\n\n波は毎tick 0.5ブロック\n進むので、波長は\n周期の半分になる。",
+  "guide.field_arcana.page.14": "§l干渉§r\n\n同じ周期の共鳴器は\n干渉する。同位相なら\n中央で強め合い、\n逆位相なら打ち消す。\n\n振幅モードの検場器で\n縞を読める。腹では\nアメジストが歌う。"
 }

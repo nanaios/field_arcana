@@ -1,5 +1,6 @@
 package com.nanaios.fieldarcana;
 
+import com.nanaios.fieldarcana.phenomena.Resonance;
 import com.nanaios.fieldarcana.phenomena.Transmutations;
 import com.nanaios.fieldarcana.registry.ArcanaBlockEntities;
 import com.nanaios.fieldarcana.registry.ArcanaBlocks;
@@ -39,6 +40,7 @@ public final class FieldArcana {
         ArcanaTriggers.TRIGGERS.register(modBus);
 
         NeoForge.EVENT_BUS.addListener(Transmutations::onLevelTick);
+        NeoForge.EVENT_BUS.addListener(Resonance::onLevelTick);
         NeoForge.EVENT_BUS.addListener((AddReloadListenerEvent event) -> event.addListener(new Transmutations.Loader()));
     }
 

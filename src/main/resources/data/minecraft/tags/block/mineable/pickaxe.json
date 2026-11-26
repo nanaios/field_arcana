@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "field_arcana:field_emitter",
-    "field_arcana:field_sensor"
+    "field_arcana:field_sensor",
+    "field_arcana:field_resonator"
   ]
 }

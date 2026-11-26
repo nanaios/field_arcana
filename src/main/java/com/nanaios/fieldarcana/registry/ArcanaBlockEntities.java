@@ -2,6 +2,7 @@ package com.nanaios.fieldarcana.registry;
 
 import com.nanaios.fieldarcana.FieldArcana;
 import com.nanaios.fieldarcana.block.FieldEmitterBlockEntity;
+import com.nanaios.fieldarcana.block.FieldResonatorBlockEntity;
 import com.nanaios.fieldarcana.block.FieldSensorBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -14,6 +15,10 @@ public final class ArcanaBlockEntities {
     @SuppressWarnings("DataFlowIssue") // null data fixer type is the documented way for modded block entities
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FieldEmitterBlockEntity>> FIELD_EMITTER = BLOCK_ENTITIES.register("field_emitter",
             () -> BlockEntityType.Builder.of(FieldEmitterBlockEntity::new, ArcanaBlocks.FIELD_EMITTER.get()).build(null));
+
+    @SuppressWarnings("DataFlowIssue")
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FieldResonatorBlockEntity>> FIELD_RESONATOR = BLOCK_ENTITIES.register("field_resonator",
+            () -> BlockEntityType.Builder.of(FieldResonatorBlockEntity::new, ArcanaBlocks.FIELD_RESONATOR.get()).build(null));
 
     @SuppressWarnings("DataFlowIssue")
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FieldSensorBlockEntity>> FIELD_SENSOR = BLOCK_ENTITIES.register("field_sensor",

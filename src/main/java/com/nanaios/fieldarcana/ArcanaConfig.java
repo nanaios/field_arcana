@@ -14,6 +14,7 @@ public final class ArcanaConfig {
     private static final ModConfigSpec.DoubleValue BREAKDOWN_THRESHOLD;
     private static final ModConfigSpec.BooleanValue TRANSMUTATION;
     private static final ModConfigSpec.IntValue TRANSMUTATION_ATTEMPTS;
+    private static final ModConfigSpec.BooleanValue RESONANCE;
 
     static {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
@@ -44,6 +45,9 @@ public final class ArcanaConfig {
         TRANSMUTATION_ATTEMPTS = b.comment("Blocks probed per Mutatio source every 10 ticks.")
                 .translation("config.field_arcana.transmutationAttempts")
                 .defineInRange("transmutationAttempts", 2, 0, 64);
+        RESONANCE = b.comment("Amethyst sings where oscillating fields are strong.")
+                .translation("config.field_arcana.resonance")
+                .define("resonance", true);
         b.pop();
         SPEC = b.build();
     }
@@ -89,6 +93,10 @@ public final class ArcanaConfig {
 
     public static boolean transmutation() {
         return get(TRANSMUTATION);
+    }
+
+    public static boolean resonance() {
+        return get(RESONANCE);
     }
 
     public static int transmutationAttempts() {

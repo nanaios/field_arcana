@@ -37,6 +37,7 @@ public final class LensVisualizer {
     private static final int MAX_SEEDS = 10;
     private static final double STEP = 0.35;
     private static final int MAX_STEPS = 44;
+    private static final double WAVE_RADIUS = 14.0;
     private static final Map<Integer, Vec3[]> SPHERES = new HashMap<>();
 
     private LensVisualizer() {
@@ -87,7 +88,11 @@ public final class LensVisualizer {
     private static void drawFieldLines(Minecraft mc, FieldWorld world, FieldType type, Vec3 eye, int phase) {
         List<Seed> seeds = new ArrayList<>();
         for (FieldSource source : world.sourcesNear(type, eye, VIEW_RADIUS)) {
-            seeds.add(new Seed(source.position(), source.charge()));
+            if (source.isOscillating()) {
+                drawWavefronts(mc, type, source);
+            } else {
+                seeds.add(new Seed(source.position(), source.charge()));
+            }
         }
         for (FieldWorld.Emitter emitter : world.emitters(type)) {
             if (emitter.position().distanceToSqr(eye) < VIEW_RADIUS * VIEW_RADIUS) {
@@ -119,6 +124,32 @@ public final class LensVisualizer {
                     dot(mc, Math.floorMod(k, 3) == 0 ? bright : dust, point, 3);
                     return point.distanceToSqr(eye) < VIEW_RADIUS * VIEW_RADIUS && !nearSink(point, all, forward);
                 });
+            }
+        }
+    }
+
+    /**
+     * Crests of an oscillating source on its horizontal plane: the circles where the retarded
+     * phase ωt − kr + φ0 is a multiple of 2π. They expand at the field's wave speed.
+     */
+    private static void drawWavefronts(Minecraft mc, FieldType type, FieldSource source) {
+        double omega = Math.abs(source.frequency());
+        double k = omega / type.waveSpeed();
+        double wavelength = 2 * Math.PI / k;
+        long time = mc.level == null ? 0 : mc.level.getGameTime();
+        double phase = omega * time + source.phase() * Math.signum(source.frequency());
+        double first = (phase % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) / k;
+        DustParticleOptions crest = ArcanaEffects.dust(type.color(), 0.7F);
+        Vec3 c = source.position();
+        dot(mc, ArcanaEffects.dust(type.color(), 2.0F), c, 3);
+        for (double r = first; r < WAVE_RADIUS; r += wavelength) {
+            if (r < 0.3) {
+                continue;
+            }
+            int n = Mth.clamp((int) (r * 2 * Math.PI / 0.6), 8, 160);
+            for (int i = 0; i < n; i++) {
+                double a = 2 * Math.PI * i / n;
+                dot(mc, crest, new Vec3(c.x + Math.cos(a) * r, c.y, c.z + Math.sin(a) * r), 3);
             }
         }
     }
@@ -169,9 +200,11 @@ public final class LensVisualizer {
                 text.append(Component.literal("  "));
             }
             text.append(type.displayName());
+            double amplitude = world.amplitude(type, at);
+            String wave = amplitude > 0.005 ? String.format(Locale.ROOT, compact ? "~%.1f" : "   ~A = %.2f", amplitude) : "";
             text.append(Component.literal(compact
-                    ? String.format(Locale.ROOT, " %.1f|%.2f", s.potential(), s.intensity())
-                    : String.format(Locale.ROOT, "  φ = %.2f  (ambient %.2f)   |E| = %.3f   gain ×%.2f", s.potential(), s.ambient(), s.intensity(), s.gain())));
+                    ? String.format(Locale.ROOT, " %.1f|%.2f", s.potential(), s.intensity()) + wave
+                    : String.format(Locale.ROOT, "  φ = %.2f  (ambient %.2f)   |E| = %.3f   gain ×%.2f", s.potential(), s.ambient(), s.intensity(), s.gain()) + wave));
         }
         return text;
     }
