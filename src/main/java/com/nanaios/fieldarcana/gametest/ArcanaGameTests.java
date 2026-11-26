@@ -68,8 +68,8 @@ public final class ArcanaGameTests {
         helper.assertBlockPresent(Blocks.SAND, sand);
 
         put(helper, FieldTypes.FULGUR.get(), new Vec3(7.5, 2.5, 9.5), 8.0);
-        helper.assertTrue(Transmutations.tryTransmute(helper.getLevel(), world(helper), helper.absolutePos(sand)) != null,
-                "sand should transmute in Mutatio + Fulgur");
+        ResourceLocation fired = Transmutations.tryTransmute(helper.getLevel(), world(helper), helper.absolutePos(sand));
+        helper.assertTrue(FieldArcana.id("fulgurite").equals(fired), "sand should transmute by the fulgurite recipe, got " + fired);
         helper.assertBlockPresent(Blocks.GLASS, sand);
         cleanup(helper);
         helper.succeed();
@@ -177,6 +177,16 @@ public final class ArcanaGameTests {
 
         Charges.clearInduced(caster, null);
         cleanup(helper);
+        helper.succeed();
+    }
+
+    /** Every advancement loads, including the custom trigger conditions. */
+    @GameTest(template = LAB, batch = "fa_advancements")
+    public static void advancementsLoad(GameTestHelper helper) {
+        for (String name : new String[]{"root", "crystallised_field", "observer", "interference", "gravity_well", "negative_mass",
+                "faraday_cage", "spark_gap", "field_telegraph", "philosophers_field", "fulgurite", "carbon_under_pressure"}) {
+            helper.assertTrue(helper.getLevel().getServer().getAdvancements().get(FieldArcana.id(name)) != null, "advancement " + name + " did not load");
+        }
         helper.succeed();
     }
 }

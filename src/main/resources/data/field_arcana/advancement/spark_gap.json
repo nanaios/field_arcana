@@ -1,0 +1,26 @@
+{
+  "parent": "field_arcana:interference",
+  "display": {
+    "icon": {
+      "id": "field_arcana:fulgur_core"
+    },
+    "title": {
+      "translate": "advancement.field_arcana.spark_gap.title"
+    },
+    "description": {
+      "translate": "advancement.field_arcana.spark_gap.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "see": {
+      "trigger": "field_arcana:witness_phenomenon",
+      "conditions": {
+        "kind": "breakdown"
+      }
+    }
+  }
+}

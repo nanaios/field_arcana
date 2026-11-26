@@ -1,0 +1,24 @@
+{
+  "parent": "field_arcana:crystallised_field",
+  "display": {
+    "icon": {
+      "id": "field_arcana:interference_staff"
+    },
+    "title": {
+      "translate": "advancement.field_arcana.interference.title"
+    },
+    "description": {
+      "translate": "advancement.field_arcana.interference.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "cast": {
+      "trigger": "field_arcana:cast_spell",
+      "conditions": {}
+    }
+  }
+}

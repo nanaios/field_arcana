@@ -1,0 +1,26 @@
+{
+  "parent": "field_arcana:crystallised_field",
+  "display": {
+    "icon": {
+      "id": "field_arcana:field_sensor"
+    },
+    "title": {
+      "translate": "advancement.field_arcana.field_telegraph.title"
+    },
+    "description": {
+      "translate": "advancement.field_arcana.field_telegraph.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "see": {
+      "trigger": "field_arcana:witness_phenomenon",
+      "conditions": {
+        "kind": "telegraph"
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "parent": "field_arcana:root",
+  "display": {
+    "icon": {
+      "id": "field_arcana:gravis_core"
+    },
+    "title": {
+      "translate": "advancement.field_arcana.crystallised_field.title"
+    },
+    "description": {
+      "translate": "advancement.field_arcana.crystallised_field.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "core": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#field_arcana:field_cores"
+          }
+        ]
+      }
+    }
+  }
+}

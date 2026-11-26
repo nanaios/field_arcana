@@ -1,6 +1,8 @@
 package com.nanaios.fieldarcana.item;
 
+import com.nanaios.fieldarcana.ArcanaConfig;
 import com.nanaios.fieldarcana.registry.ArcanaComponents;
+import com.nanaios.fieldarcana.registry.ArcanaTriggers;
 import com.nanaios.fieldarcana.spell.ArcanaTuning;
 import com.nanaios.fieldarcana.spell.StaffCasting;
 import com.nanaios.fieldtheory.api.FieldTheoryAPI;
@@ -12,6 +14,7 @@ import javax.annotation.Nullable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -47,6 +50,11 @@ public class InterferenceStaffItem extends Item {
         return stack.getOrDefault(ArcanaComponents.RESONANCE.get(), 0);
     }
 
+    /** Resonance a cast of {@code mode} costs, after the server's cost multiplier. */
+    public static int cost(StaffMode mode) {
+        return (int) Math.ceil(mode.cost() * ArcanaConfig.costMultiplier());
+    }
+
     @Nullable
     public static FieldType heldField(Player player, InteractionHand staffHand) {
         ItemStack other = player.getItemInHand(staffHand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
@@ -76,16 +84,20 @@ public class InterferenceStaffItem extends Item {
         }
         boolean free = player.getAbilities().instabuild;
         int resonance = resonance(staff);
-        if (!free && resonance < mode.cost()) {
+        int cost = cost(mode);
+        if (!free && resonance < cost) {
             if (!level.isClientSide) {
-                player.displayClientMessage(Component.translatable("message.field_arcana.staff.no_resonance", resonance, mode.cost()).withStyle(ChatFormatting.GRAY), true);
+                player.displayClientMessage(Component.translatable("message.field_arcana.staff.no_resonance", resonance, cost).withStyle(ChatFormatting.GRAY), true);
                 level.playSound(null, player.blockPosition(), SoundEvents.AMETHYST_BLOCK_BREAK, SoundSource.PLAYERS, 0.6F, 0.6F);
             }
             return InteractionResultHolder.fail(staff);
         }
         if (level instanceof ServerLevel serverLevel && StaffCasting.cast(serverLevel, player, mode, field)) {
             if (!free) {
-                staff.set(ArcanaComponents.RESONANCE.get(), resonance - mode.cost());
+                staff.set(ArcanaComponents.RESONANCE.get(), resonance - cost);
+            }
+            if (player instanceof ServerPlayer serverPlayer) {
+                ArcanaTriggers.CAST_SPELL.get().trigger(serverPlayer, mode, field);
             }
             player.getCooldowns().addCooldown(this, 10);
             player.awardStat(Stats.ITEM_USED.get(this));
@@ -109,7 +121,7 @@ public class InterferenceStaffItem extends Item {
         for (FieldType type : FieldTheoryAPI.fieldTypes()) {
             ambient += Math.abs(world.sample(type, pos, entity).ambient());
         }
-        int gained = Math.max(0, (int) Math.round(ambient * ArcanaTuning.REGEN_PER_AMBIENT));
+        int gained = Math.max(0, (int) Math.round(ambient * ArcanaTuning.REGEN_PER_AMBIENT * ArcanaConfig.regenMultiplier()));
         if (gained > 0) {
             stack.set(ArcanaComponents.RESONANCE.get(), Math.min(ArcanaTuning.MAX_RESONANCE, resonance + gained));
         }

@@ -7,8 +7,11 @@ import com.nanaios.fieldarcana.registry.ArcanaComponents;
 import com.nanaios.fieldarcana.registry.ArcanaInteractions;
 import com.nanaios.fieldarcana.registry.ArcanaItems;
 import com.nanaios.fieldarcana.registry.ArcanaTabs;
+import com.nanaios.fieldarcana.registry.ArcanaTriggers;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
@@ -25,13 +28,15 @@ import net.neoforged.neoforge.event.AddReloadListenerEvent;
 public final class FieldArcana {
     public static final String MOD_ID = "field_arcana";
 
-    public FieldArcana(IEventBus modBus) {
+    public FieldArcana(IEventBus modBus, ModContainer container) {
+        container.registerConfig(ModConfig.Type.SERVER, ArcanaConfig.SPEC);
         ArcanaComponents.COMPONENTS.register(modBus);
         ArcanaBlocks.BLOCKS.register(modBus);
         ArcanaItems.ITEMS.register(modBus);
         ArcanaBlockEntities.BLOCK_ENTITIES.register(modBus);
         ArcanaTabs.TABS.register(modBus);
         ArcanaInteractions.INTERACTIONS.register(modBus);
+        ArcanaTriggers.TRIGGERS.register(modBus);
 
         NeoForge.EVENT_BUS.addListener(Transmutations::onLevelTick);
         NeoForge.EVENT_BUS.addListener((AddReloadListenerEvent event) -> event.addListener(new Transmutations.Loader()));

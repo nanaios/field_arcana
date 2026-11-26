@@ -1,0 +1,27 @@
+{
+  "parent": "field_arcana:gravity_well",
+  "display": {
+    "icon": {
+      "id": "field_arcana:gravis_core"
+    },
+    "title": {
+      "translate": "advancement.field_arcana.negative_mass.title"
+    },
+    "description": {
+      "translate": "advancement.field_arcana.negative_mass.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "cast": {
+      "trigger": "field_arcana:cast_spell",
+      "conditions": {
+        "mode": "imbue_negative",
+        "field": "field_theory:gravis"
+      }
+    }
+  }
+}

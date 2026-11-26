@@ -1,0 +1,27 @@
+{
+  "parent": "field_arcana:interference",
+  "display": {
+    "icon": {
+      "id": "field_arcana:gravis_core"
+    },
+    "title": {
+      "translate": "advancement.field_arcana.gravity_well.title"
+    },
+    "description": {
+      "translate": "advancement.field_arcana.gravity_well.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "cast": {
+      "trigger": "field_arcana:cast_spell",
+      "conditions": {
+        "mode": "emit_positive",
+        "field": "field_theory:gravis"
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+name: Release
+
+# Push a tag such as v0.2.0 to build, test and attach the jars to a GitHub release.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Build against the Field Theory tag of the same name if it exists, otherwise main.
+      - name: Check out Field Theory (same tag)
+        id: same_tag
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: nanaios/field_theory
+          ref: ${{ github.ref_name }}
+          path: .deps/field_theory
+
+      - name: Check out Field Theory (main)
+        if: steps.same_tag.outcome == 'failure'
+        uses: actions/checkout@v4
+        with:
+          repository: nanaios/field_theory
+          path: .deps/field_theory
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Publish Field Theory to Maven Local
+        working-directory: .deps/field_theory
+        run: ./gradlew publishToMavenLocal --console=plain
+
+      - name: Build
+        run: ./gradlew build --console=plain
+
+      - name: GameTests
+        run: ./gradlew runGameTestServer --console=plain
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: build/libs/*.jar
+          generate_release_notes: true

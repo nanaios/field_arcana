@@ -15,11 +15,7 @@ public final class ArcanaTuning {
     public static final double LENS_RADIUS = 5.0;
     public static final double LENS_GAIN = 3.0;
     public static final double SHIELD_RADIUS = 3.5;
-    public static final double CAST_RANGE = 24.0;
     public static final double IMBUE_RANGE = 16.0;
-
-    /** Breakdown threshold of |E|·(1 + |q|). */
-    public static final double BREAKDOWN_STRESS = 6.0;
 
     private ArcanaTuning() {
     }

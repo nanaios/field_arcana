@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:advancement_reward",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "field_arcana:field_primer"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "field_arcana:advancement/field_primer"
+}

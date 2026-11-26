@@ -1,0 +1,30 @@
+{
+  "parent": "field_arcana:philosophers_field",
+  "display": {
+    "icon": {
+      "id": "minecraft:diamond"
+    },
+    "title": {
+      "translate": "advancement.field_arcana.carbon_under_pressure.title"
+    },
+    "description": {
+      "translate": "advancement.field_arcana.carbon_under_pressure.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "see": {
+      "trigger": "field_arcana:witness_phenomenon",
+      "conditions": {
+        "kind": "transmutation",
+        "detail": "field_arcana:carbon_crystallisation"
+      }
+    }
+  },
+  "rewards": {
+    "experience": 100
+  }
+}

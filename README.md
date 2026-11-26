@@ -33,6 +33,13 @@ Minecraft **1.21.1 / NeoForge 21.1** 向けの魔法 Mod です。[Field Theory�
 | **場発生器** | 鉄インゴット×4＋アメジスト×4＋レッドストーンブロック | 場核で右クリックして同調。**レッドストーン信号の強さに比例した電荷** の永続源になる。素手で右クリックすると極性反転 |
 | **検場器** | アメジスト＋ネザークォーツ×2＋コンパレーター＋滑らかな石×3 | 場核で同調。その場所の \|φ\|（源由来）か \|E\| を **レッドストーン信号** で出力。素手で右クリックするとモード切替 |
 
+### 場の理論入門（ガイド本）
+
+アメジストの欠片を初めて拾うと進捗「場術」の報酬としてもらえます（本＋アメジストの欠片でも作れます）。
+使用すると、四つの場・杖・現象の手引きがプレイヤーの言語で読めます。
+
+![場の理論入門（日本語版、全12ページ）](docs/primer_ja.png)
+
 ### 干渉杖のモード
 
 | モード | 効果 | 消費 |
@@ -81,6 +88,29 @@ Minecraft **1.21.1 / NeoForge 21.1** 向けの魔法 Mod です。[Field Theory�
 
 `input` はブロック ID かタグ（`#minecraft:logs`）、`conditions` は `min` / `max` を持てます。
 
+### 進捗
+
+「場術」から始まる 12 個の進捗があります。詠唱そのものに加えて、**現象を目撃したこと**（周囲 16 ブロックで起きた絶縁破壊・転成・検場器の受信）でも達成できます。
+現象は術者ではなく場から生まれるので、居合わせた全員が達成します。データパック用に 2 種類の独自トリガーがあります。
+
+```json
+{ "trigger": "field_arcana:cast_spell", "conditions": { "mode": "emit_positive", "field": "field_theory:gravis" } }
+{ "trigger": "field_arcana:witness_phenomenon", "conditions": { "kind": "transmutation", "detail": "field_arcana:fulgurite" } }
+```
+
+`kind` は `breakdown` / `transmutation` / `telegraph`。`detail` は転成レシピの ID です。
+
+### 設定（`serverconfig/field_arcana-server.toml`）
+
+| キー | 既定値 | 意味 |
+|---|---|---|
+| `staff.costMultiplier` | 1.0 | 共鳴の消費倍率 |
+| `staff.regenMultiplier` | 1.0 | 共鳴の回復倍率 |
+| `staff.castRange` | 24 | 放出・収束の射程 |
+| `phenomena.binding` / `breakdown` / `transmutation` | true | 各現象の有効・無効 |
+| `phenomena.breakdownThreshold` | 6.0 | 絶縁破壊が起きる雷場応力 |
+| `phenomena.transmutationAttempts` | 2 | 転場の源 1 つが 10 tick ごとに調べるブロック数 |
+
 ## 4. 遊び方の例
 
 - **重力井戸**：重場を放出すると、周囲のアイテムや経験値が吸い込まれる。井戸の横を飛ぶ矢は曲がる。
@@ -117,6 +147,9 @@ GameTest（`gametest/ArcanaGameTests.java`）では、実サーバー上で次�
 - 結場の中では落下が大きく遅くなる
 - 異符号に帯電した生き物は雷源に引き寄せられ、絶縁破壊でダメージを受けて放電する
 - 干渉杖の放出で源ができ、付与（対象なし）で術者自身が帯電する
+- 12 個の進捗と独自トリガーの条件がすべて読み込める
+
+`v0.2.0` のようなタグを push すると、同名タグ（なければ main）の Field Theory と組み合わせてビルド・テストし、jar を GitHub Release に添付します。
 
 ## ライセンス
 

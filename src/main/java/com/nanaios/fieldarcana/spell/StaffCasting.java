@@ -1,5 +1,6 @@
 package com.nanaios.fieldarcana.spell;
 
+import com.nanaios.fieldarcana.ArcanaConfig;
 import com.nanaios.fieldarcana.FieldArcana;
 import com.nanaios.fieldarcana.item.StaffMode;
 import com.nanaios.fieldtheory.api.FieldRegion;
@@ -44,7 +45,7 @@ public final class StaffCasting {
                 if (field == null) {
                     return false;
                 }
-                Vec3 target = targetPoint(caster, ArcanaTuning.CAST_RANGE);
+                Vec3 target = targetPoint(caster, ArcanaConfig.castRange());
                 double charge = mode.sign() * ArcanaTuning.emitCharge(field);
                 if (!world.putSource(FieldSource.temporary(level, field, target, charge, ArcanaTuning.EMIT_DURATION, ORIGIN))) {
                     return false;
@@ -70,7 +71,7 @@ public final class StaffCasting {
                 level.playSound(null, center.x, center.y, center.z, SoundEvents.AMETHYST_CLUSTER_HIT, SoundSource.PLAYERS, 1.0F, mode.sign() > 0 ? 1.4F : 0.8F);
             }
             case LENS -> {
-                Vec3 target = targetPoint(caster, ArcanaTuning.CAST_RANGE);
+                Vec3 target = targetPoint(caster, ArcanaConfig.castRange());
                 world.putRegion(FieldRegion.temporary(level, Optional.ofNullable(field), target, ArcanaTuning.LENS_RADIUS,
                         ArcanaTuning.LENS_GAIN, ArcanaTuning.REGION_DURATION, ORIGIN));
                 ArcanaEffects.beam(level, eye, target, color);
