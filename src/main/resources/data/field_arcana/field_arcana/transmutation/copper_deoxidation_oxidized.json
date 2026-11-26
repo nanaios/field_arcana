@@ -1,0 +1,11 @@
+{
+  "input": "minecraft:oxidized_copper",
+  "output": "minecraft:weathered_copper",
+  "catalyst": 1.0,
+  "conditions": [
+    {
+      "field": "field_theory:fulgur",
+      "min": 3.0
+    }
+  ]
+}

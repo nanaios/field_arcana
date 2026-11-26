@@ -1,0 +1,11 @@
+{
+  "input": "minecraft:netherrack",
+  "output": "minecraft:magma_block",
+  "catalyst": 1.5,
+  "conditions": [
+    {
+      "field": "field_theory:fulgur",
+      "min": 4.0
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "input": "minecraft:mud",
+  "output": "minecraft:clay",
+  "catalyst": 1.5,
+  "conditions": [
+    {
+      "field": "field_theory:nexus",
+      "min": 2.0
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "field_arcana:block/field_sensor"
+    }
+  }
+}

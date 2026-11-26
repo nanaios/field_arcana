@@ -1,0 +1,11 @@
+{
+  "input": "minecraft:stone_bricks",
+  "output": "minecraft:cracked_stone_bricks",
+  "catalyst": 1.0,
+  "conditions": [
+    {
+      "field": "field_theory:gravis",
+      "min": 4.0
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "input": "minecraft:packed_ice",
+  "output": "minecraft:blue_ice",
+  "catalyst": 2.0,
+  "conditions": [
+    {
+      "field": "field_theory:gravis",
+      "min": 9.0
+    }
+  ]
+}

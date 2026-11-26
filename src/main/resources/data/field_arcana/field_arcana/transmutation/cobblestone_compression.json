@@ -1,0 +1,11 @@
+{
+  "input": "minecraft:cobblestone",
+  "output": "minecraft:cobbled_deepslate",
+  "catalyst": 1.5,
+  "conditions": [
+    {
+      "field": "field_theory:gravis",
+      "min": 5.0
+    }
+  ]
+}
