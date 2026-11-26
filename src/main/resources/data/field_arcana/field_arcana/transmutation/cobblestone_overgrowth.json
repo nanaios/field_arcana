@@ -1,0 +1,11 @@
+{
+  "input": "minecraft:cobblestone",
+  "output": "minecraft:mossy_cobblestone",
+  "catalyst": 1.5,
+  "conditions": [
+    {
+      "field": "field_theory:nexus",
+      "min": 3.0
+    }
+  ]
+}

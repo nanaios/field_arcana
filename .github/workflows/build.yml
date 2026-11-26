@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Field Arcana is built against Field Theory. Use the branch with the same name if it
+      # exists (so paired changes are tested together), otherwise main.
+      # If field_theory is private, add a FIELD_THEORY_TOKEN secret with read access to it.
+      - name: Check out Field Theory (same branch)
+        id: same_branch
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: nanaios/field_theory
+          ref: ${{ github.head_ref || github.ref_name }}
+          path: .deps/field_theory
+          token: ${{ secrets.FIELD_THEORY_TOKEN || github.token }}
+
+      - name: Check out Field Theory (main)
+        if: steps.same_branch.outcome == 'failure'
+        uses: actions/checkout@v4
+        with:
+          repository: nanaios/field_theory
+          path: .deps/field_theory
+          token: ${{ secrets.FIELD_THEORY_TOKEN || github.token }}
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Publish Field Theory to Maven Local
+        working-directory: .deps/field_theory
+        run: ./gradlew publishToMavenLocal --console=plain
+
+      - name: Build
+        run: ./gradlew build --console=plain
+
+      - name: GameTests
+        run: ./gradlew runGameTestServer --console=plain
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: field_arcana
+          path: build/libs/*.jar

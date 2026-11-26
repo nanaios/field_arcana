@@ -1,0 +1,5 @@
+{
+  "input": "minecraft:cobblestone",
+  "output": "minecraft:gravel",
+  "catalyst": 1.5
+}

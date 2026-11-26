@@ -1,0 +1,11 @@
+{
+  "input": "minecraft:red_sand",
+  "output": "minecraft:orange_stained_glass",
+  "catalyst": 1.5,
+  "conditions": [
+    {
+      "field": "field_theory:fulgur",
+      "min": 3.0
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "input": "minecraft:exposed_copper",
+  "output": "minecraft:copper_block",
+  "catalyst": 1.0,
+  "conditions": [
+    {
+      "field": "field_theory:fulgur",
+      "min": 3.0
+    }
+  ]
+}

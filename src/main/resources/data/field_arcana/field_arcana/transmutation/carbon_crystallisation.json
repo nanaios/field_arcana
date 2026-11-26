@@ -1,0 +1,15 @@
+{
+  "input": "minecraft:coal_block",
+  "output": "minecraft:deepslate_diamond_ore",
+  "catalyst": 3.0,
+  "conditions": [
+    {
+      "field": "field_theory:gravis",
+      "min": 9.0
+    },
+    {
+      "field": "field_theory:nexus",
+      "min": 4.0
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "input": "minecraft:sand",
+  "output": "minecraft:glass",
+  "catalyst": 1.5,
+  "conditions": [
+    {
+      "field": "field_theory:fulgur",
+      "min": 3.0
+    }
+  ]
+}
